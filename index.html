@@ -1,0 +1,122 @@
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title>File Upload with Progress Bar</title>
+  </head>
+  <body>
+    <h1>File Upload with Progress Bar</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+      <input type="file" name="file" />
+      <button type="submit">Upload File</button>
+    </form>
+    <div id="progress-bar"></div>
+
+    <script>
+      const form = document.getElementById('upload-form');
+      const progressBar = document.getElementById('progress-bar');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fileInput = document.querySelector('input[type="file"]');
+        const file = fileInput.files[0];
+        const xhr = new XMLHttpRequest();
+
+        xhr.upload.addEventListener('progress', (e) => {
+          const percent = (e.loaded / e.total) * 100;
+          progressBar.innerHTML = `Uploading... ${percent.toFixed(2)}%`;
+        });
+
+        xhr.open('POST', '/upload', true);
+        xhr.send(new FormData(form));
+      });
+    </script>
+  </body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>File Upload with Progress Bar</title>
+  </head>
+  <body>
+    <h1>File Upload with Progress Bar</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+      <input type="file" name="file" />
+      <button type="submit">Upload File</button>
+    </form>
+    <div id="progress-bar"></div>
+
+    <!-- <script>
+      const form = document.getElementById('upload-form');
+      const progressBar = document.getElementById('progress-bar');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fileInput = document.querySelector('input[type="file"]');
+        const file = fileInput.files[0];
+        const xhr = new XMLHttpRequest();
+
+        xhr.upload.addEventListener('progress', (e) => {
+          // Don't update the progress bar here
+        });
+
+        xhr.open('POST', '/upload', true);
+        xhr.send(new FormData(form));
+
+        // Poll the server for updates
+        const intervalId = setInterval(() => {
+          fetch('/progress')
+            .then(response => response.json())
+            .then(data => {
+              progressBar.innerHTML = `Uploading... ${data.progress}%`;
+            });
+        }, 500); // Poll every 500ms
+
+        xhr.onload = () => {
+          clearInterval(intervalId);
+          progressBar.innerHTML = 'File uploaded successfully!';
+        };
+      });
+      
+    </script> -->
+    <script>
+      const form = document.getElementById('upload-form');
+      const progressBar = document.getElementById('progress-bar');
+    
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fileInput = document.querySelector('input[type="file"]');
+        const file = fileInput.files[0];
+        const xhr = new XMLHttpRequest();
+    
+        xhr.upload.addEventListener('progress', (e) => {
+          // Don't update the progress bar here
+        });
+    
+        xhr.open('POST', '/upload', true);
+        xhr.send(new FormData(form));
+    
+        // Poll the server for updates
+        const intervalId = setInterval(() => {
+          fetch('/progress')
+            .then(response => response.json())
+            .then(data => {
+              console.log(`Received progress update: ${data.progress}%`); // Add this line
+              progressBar.innerHTML = `Uploading... ${data.progress}%`;
+            })
+            .catch(error => {
+              console.error(`Error fetching progress: ${error}`); // Add this line
+            });
+        }, 500); // Poll every 500ms
+    
+        xhr.onload = () => {
+          clearInterval(intervalId);
+          progressBar.innerHTML = 'File uploaded successfully!';
+        };
+      });
+    </script>
+
+  </body>
+
+</html>
